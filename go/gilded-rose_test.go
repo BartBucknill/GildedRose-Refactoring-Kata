@@ -39,7 +39,7 @@ type Test struct {
 }
 
 var tests = []Test{
-	// NAME
+	// NIL
 	{
 		//this test describes a modification of existent behaviour
 		name: "no crash on nil items",
