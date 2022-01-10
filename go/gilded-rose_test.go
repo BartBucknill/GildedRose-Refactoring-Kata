@@ -19,6 +19,12 @@ func compareItems(actualItems, expectedItems []*Item) error {
 	}
 	for i, actual := range actualItems {
 		expected := expectedItems[i]
+		if expected == nil {
+			if actual != nil {
+				fmt.Errorf("Item mismatch expected nil, but got %v", actual)
+			}
+			continue
+		}
 		if diff := cmp.Diff(*actual, *expected, cmp.AllowUnexported(Item{})); diff != "" {
 			return fmt.Errorf("Item mismatch (-want +got):\n%s", diff)
 		}
@@ -33,6 +39,17 @@ type Test struct {
 }
 
 var tests = []Test{
+	// NAME
+	{
+		//this test describes a modification of existent behaviour
+		name: "no crash on nil items",
+		input: []*Item{
+			nil,
+		},
+		expected: []*Item{
+			nil,
+		},
+	},
 	// NAME
 	{
 		name: "item name not changed",
@@ -199,6 +216,25 @@ var tests = []Test{
 		},
 		expected: []*Item{
 			{name: "Backstage passes to a TAFKAL80ETC concert", sellIn: 2, quality: 110},
+		},
+	},
+	// special item: Conjured
+	{
+		name: "item 'Conjured' 'quality' degrades by 2 for each update",
+		input: []*Item{
+			{name: "Conjured", sellIn: 10, quality: 10},
+		},
+		expected: []*Item{
+			{name: "Conjured", sellIn: 9, quality: 8},
+		},
+	},
+	{
+		name: "item 'Conjured' 'quality' never negative",
+		input: []*Item{
+			{name: "Conjured", sellIn: 10, quality: 1},
+		},
+		expected: []*Item{
+			{name: "Conjured", sellIn: 9, quality: 0},
 		},
 	},
 }

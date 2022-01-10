@@ -10,6 +10,10 @@ const MAX_QUALITY = 50
 func UpdateQuality(items []*Item) {
 	for _, item := range items {
 
+		if item == nil {
+			continue
+		}
+
 		//UPDATE SELLIN: same for all items except Sulfuras
 		if item.name != "Sulfuras, Hand of Ragnaros" {
 			item.sellIn--
