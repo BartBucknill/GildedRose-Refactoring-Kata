@@ -81,6 +81,15 @@ var tests = []Test{
 			{name: "foo", sellIn: -1, quality: 0},
 		},
 	},
+	{
+		name: "item  'foo' 'quality' may be initialised to over 50 and decreases as normal from there",
+		input: []*Item{
+			{name: "foo", sellIn: 10, quality: 55},
+		},
+		expected: []*Item{
+			{name: "foo", sellIn: 9, quality: 54},
+		},
+	},
 	// special item: Aged Brie
 	{
 		name: "item 'Aged Brie' 'quality' increases as 'sellIn' decreases",
@@ -109,6 +118,15 @@ var tests = []Test{
 			{name: "Aged Brie", sellIn: 49, quality: 50},
 		},
 	},
+	{
+		name: "item 'Aged Brie' 'quality' does not change if initialised over 50",
+		input: []*Item{
+			{name: "Aged Brie", sellIn: 50, quality: 55},
+		},
+		expected: []*Item{
+			{name: "Aged Brie", sellIn: 49, quality: 55},
+		},
+	},
 	// special item: Sulfuras, Hand of Ragnaros
 	{
 		name: "item 'Sulfuras, Hand of Ragnaros' 'quality' and 'sellIn' do not change",
@@ -117,6 +135,15 @@ var tests = []Test{
 		},
 		expected: []*Item{
 			{name: "Sulfuras, Hand of Ragnaros", sellIn: 10, quality: 10},
+		},
+	},
+	{
+		name: "item 'Sulfuras, Hand of Ragnaros' 'quality' and 'sellIn' do not change and may be 80",
+		input: []*Item{
+			{name: "Sulfuras, Hand of Ragnaros", sellIn: 10, quality: 80},
+		},
+		expected: []*Item{
+			{name: "Sulfuras, Hand of Ragnaros", sellIn: 10, quality: 80},
 		},
 	},
 	// special item: Backstage passes to a TAFKAL80ETC concert
@@ -163,6 +190,15 @@ var tests = []Test{
 		},
 		expected: []*Item{
 			{name: "Backstage passes to a TAFKAL80ETC concert", sellIn: 4, quality: 50},
+		},
+	},
+	{
+		name: "item 'Backstage passes' 'quality' not change if over 50",
+		input: []*Item{
+			{name: "Backstage passes to a TAFKAL80ETC concert", sellIn: 3, quality: 110},
+		},
+		expected: []*Item{
+			{name: "Backstage passes to a TAFKAL80ETC concert", sellIn: 2, quality: 110},
 		},
 	},
 }
